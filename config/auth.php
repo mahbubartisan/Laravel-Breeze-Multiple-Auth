@@ -47,9 +47,9 @@ return [
         ],
 
         
-        'seller' => [
+        'employee' => [
             'driver' => 'session',
-            'provider' => 'sellers',
+            'provider' => 'employees',
         ],
     ],
 
@@ -71,6 +71,7 @@ return [
     */
 
     'providers' => [
+
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
@@ -81,9 +82,9 @@ return [
             'model' => App\Models\Admin::class,
         ],
 
-        'sellers' => [
+        'employees' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Seller::class,
+            'model' => App\Models\Employee::class,
         ],
 
         // 'users' => [
