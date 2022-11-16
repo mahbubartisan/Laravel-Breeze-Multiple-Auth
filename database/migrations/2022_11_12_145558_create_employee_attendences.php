@@ -20,6 +20,7 @@ class CreateEmployeeAttendences extends Migration
             $table->string('attendence_time');
             $table->string('in_time');
             $table->string('out_time')->nullable();
+            $table->string('total_hours')->nullable();
             $table->timestamps();
         });
     }
