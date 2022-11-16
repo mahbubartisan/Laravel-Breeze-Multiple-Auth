@@ -1,59 +1,61 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
+use App\Models\EmployeeContact;
 use DateTime;
 use App\Models\Employee;
 use Illuminate\Http\Request;
-use App\Models\EmployeeContact;
 use App\Models\EmployeeAttendence;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\employeeLoginRequest;
 use App\Http\Requests\StoreEmployeeRequest;
 
 class EmployeeController extends Controller
 {
-    public function index(){
+    public function index()
+    {
 
         return view('employee.auth.login');
     }
 
-    public function dashboard(){
+    public function dashboard()
+    {
 
-        $employee_attendences = EmployeeAttendence::where('employee_id', Auth::id())->get();
+        $employee_attendences = EmployeeAttendence::where('employee_id', auth()->guard('employee')->user()->id)->get();
         return view('employee.dashboard', compact('employee_attendences'));
 
     }
 
-    public function employeeLogin(Request $request){
+    public function employeeLogin(employeeLoginRequest $request)
+    {
 
-        // dd('Hello');
 
-        $check = $request->all();
+        $validated = $request->validated();
 
-        // dd($check);
-
-        $check = $request->all();
-
-        if(auth()->guard('employee')->attempt(['email' => $check['email'], 
-        'password' => $check['password'] ])){
+        // if(auth()->guard('employee')->attempt(['email' => $check['email'], 
+        // 'password' => $check['password'] ])){
+        if (auth()->guard('employee')->attempt($validated)) {
 
             return redirect()->route('employee.dashboard')->with('error', 'You Successfully logged in');
 
-        } else{
+        } else {
 
             return back()->with('error', 'Invalid Email or Password');
         }
 
     }
 
-    public function employeeLogout(){
+    public function employeeLogout()
+    {
 
         auth()->guard('employee')->logout();
 
-        return redirect()->route('employee_login_form')->with('error', 'You have successfully logged out.');
+        return redirect()->to('/')->with('error', 'You have successfully logged out.');
     }
 
-     public function storeEmployee(StoreEmployeeRequest $request)
+    public function storeEmployee(StoreEmployeeRequest $request)
     {
         $validated = $request->validated();
 
@@ -62,7 +64,6 @@ class EmployeeController extends Controller
         Employee::create($validated);
 
         $notification = array(
-
             'message' => 'Employee has been created',
             'alert-type' => 'success'
         );
@@ -86,17 +87,16 @@ class EmployeeController extends Controller
                 'message' => 'Employee not found'
             ]);
         }
-        
+
     }
 
     public function updateEmployee(StoreEmployeeRequest $request, $id)
     {
         $validated = $request->validated();
-        
+
         Employee::findOrFail($id)->update($validated);
 
         $notification = array(
-
             'message' => 'Employee has been created',
             'alert-type' => 'success',
         );
@@ -108,8 +108,7 @@ class EmployeeController extends Controller
     {
         Employee::findOrFail($id)->delete();
 
-         $notification = array(
-
+        $notification = array(
             'message' => 'Employee has been created',
             'alert-type' => 'success',
         );
@@ -128,19 +127,19 @@ class EmployeeController extends Controller
 
     public function filterEmployeeAttendence(Request $request)
     {
-        
-        if(isset($request->fromDate)){
 
-       $fromDate = new DateTime($request->fromDate);
-       $format_form_date = $fromDate->format('d F Y');
-       $toDate = new DateTime($request->toDate);
-       $format_to_date = $toDate->format('d F Y');
+        if (isset($request->fromDate)) {
 
-       $employee_attendences = EmployeeAttendence::whereBetween('attendence_date',[$format_form_date,$format_to_date])->get();
-    
-       return view('employee.dashboard', compact('employee_attendences'));
-       
-    }
+            $fromDate = new DateTime($request->fromDate);
+            $format_form_date = $fromDate->format('d F Y');
+            $toDate = new DateTime($request->toDate);
+            $format_to_date = $toDate->format('d F Y');
+
+            $employee_attendences = EmployeeAttendence::whereBetween('attendence_date', [$format_form_date, $format_to_date])->get();
+
+            return view('employee.dashboard', compact('employee_attendences'));
+
+        }
 
     }
 }

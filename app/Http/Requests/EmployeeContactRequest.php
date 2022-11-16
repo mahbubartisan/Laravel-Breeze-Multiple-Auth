@@ -24,6 +24,16 @@ class EmployeeContactRequest extends FormRequest
      */
     public function rules()
     {
+        // if (request()->routeIs('store.employee')) {
+
+        //     $employee_id = 'required';
+
+        // } elseif(request()->routeIs('update.employee')) {
+
+        //     $employee_id = 'sometimes';
+        // }
+        
+
         return [
             'contact_name' => ['required'],
             'relationship' => ['required'],

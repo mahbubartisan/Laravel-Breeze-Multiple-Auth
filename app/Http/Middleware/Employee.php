@@ -18,6 +18,7 @@ class Employee
     {
         
         if (!auth()->guard('employee')->check()) {
+            
             return redirect()->route('employee_login_form')->with('error', 'Please login first');
         } 
         

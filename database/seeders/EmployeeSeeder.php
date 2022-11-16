@@ -19,7 +19,7 @@ class EmployeeSeeder extends Seeder
         \App\Models\Employee::factory()->create([
             'firstname' => 'alhossain',
             'email' => 'my@gmail.com',
-            'password' => bcrypt('secret'),
+            'password' => bcrypt('secret'), 
         ]);
     }
 }

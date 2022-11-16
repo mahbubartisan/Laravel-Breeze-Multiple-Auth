@@ -23,16 +23,34 @@ class StoreEmployeeDetailRequest extends FormRequest
      */
     public function rules()
     {
-        return [
 
-            'employee_id' => ['required'],
-            'image' => ['required', 'mimes:png,jpg'],
-            'birthday' => ['required'],
-            'gender' => ['required'],
-            'blood_group' => ['required'],
-            'present_address' => ['required'],
-            'permanent_address' => ['required'],
-        ];
+        if (request()->routeIs('store.employee.detail')) {
+
+            return [
+                'employee_id' => ['required'],
+                'image' => ['required', 'mimes:png,jpg,webp'],
+                'birthday' => ['required'],
+                'gender' => ['required'],
+                'blood_group' => ['required'],
+                'present_address' => ['required'],
+                'permanent_address' => ['required'],
+            ];
+
+        } else {
+
+            return [
+                // 'employee_id' => ['required'],
+                'image' => ['mimes:png,jpg,webp'],
+                'birthday' => ['required'],
+                'gender' => ['required'],
+                'blood_group' => ['required'],
+                'present_address' => ['required'],
+                'permanent_address' => ['required'],
+            ];
+
+        }
+
+
     }
 
     public function messages()

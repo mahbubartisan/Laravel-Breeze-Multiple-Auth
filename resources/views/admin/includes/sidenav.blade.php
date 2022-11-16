@@ -1,6 +1,6 @@
 @php
-	$prefix = Request::route()->getPrefix();
-	$route = Route::current()->getName();
+$prefix = Request::route()->getPrefix();
+$route = Route::current()->getName();
 @endphp
 
 <div class="side-content-wrap">

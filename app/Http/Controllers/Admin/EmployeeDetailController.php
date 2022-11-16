@@ -8,11 +8,11 @@ use App\Models\EmployeeDetail;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
 use App\Http\Requests\StoreEmployeeDetailRequest;
-
+use App\Http\Requests\UpdateEmpoyeeDetailRequest;
 
 class EmployeeDetailController extends Controller
 {
-   public function show()
+    public function show()
     {
         $employee_details = EmployeeDetail::with('employee')->get();
 
@@ -26,11 +26,12 @@ class EmployeeDetailController extends Controller
         return view('admin.employee_detail.create', compact('employees'));
     }
 
-    public function storeEmployeeDetail(Request $request)
+    public function storeEmployeeDetail(StoreEmployeeDetailRequest $request)
     {
         $image = $request->file('image');
-        $image_ext = hexdec(uniqid()). '.' . $image->getClientOriginalExtension();
-        Image::make($image)->resize(300,300)->save('backend/assets/upload/employee/' . $image_ext);
+
+        $image_ext = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+        Image::make($image)->resize(300, 300)->save('backend/assets/upload/employee/' . $image_ext);
 
         $image_path = 'backend/assets/upload/employee/' . $image_ext;
 
@@ -38,9 +39,9 @@ class EmployeeDetailController extends Controller
             'photo' => $image_path,
             'birthday' => $request->birthday,
             'gender' => $request->gender,
-            'blood_group' => $request->blood_group, 
-            'present_address' => $request->present_address, 
-            'permanent_address' => $request->permanent_address, 
+            'blood_group' => $request->blood_group,
+            'present_address' => $request->present_address,
+            'permanent_address' => $request->permanent_address,
             'employee_id' => $request->employee_id,
             'created_at' => now()
         ]);
@@ -58,38 +59,37 @@ class EmployeeDetailController extends Controller
         return view('admin.employee_detail.edit', compact('employee_detail', 'employees'));
     }
 
-    public function updateEmployeeDetail(Request $request, $id)
+    public function updateEmployeeDetail(StoreEmployeeDetailRequest $request, $id)
     {
 
         // dd($request->all()); die;
-       
+
         $old_image = $request->file('old_image');
-       
+
         $image = $request->file('image');
-        
-        if($image) {
 
-        $image_ext = hexdec(uniqid()). '.' . $image->getClientOriginalExtension();
-        Image::make($image)->resize(300,300)->save('backend/assets/upload/employee/' . $image_ext);
+        if ($image) {
 
-        $image_path = 'backend/assets/upload/employee/' . $image_ext;
-        
-        unlink($old_image);
+            $image_ext = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+            Image::make($image)->resize(300, 300)->save('backend/assets/upload/employee/' . $image_ext);
 
-        $employee_detail = EmployeeDetail::findOrFail($id);
-            
-         $employee_detail->update([
-            
-            'photo' => $image_path,
-            'birthday' => $request->birthday,
-            'gender' => $request->gender,
-            'blood_group' => $request->blood_group, 
-            'present_address' => $request->present_address, 
-            'permanent_address' => $request->permanent_address, 
-            'employee_id' => $request->employee_id,
-            'created_at' => now()
-        ]);
-                
+            $image_path = 'backend/assets/upload/employee/' . $image_ext;
+
+            unlink($old_image);
+
+            $employee_detail = EmployeeDetail::findOrFail($id);
+
+            $employee_detail->update([
+                'photo' => $image_path,
+                'birthday' => $request->birthday,
+                'gender' => $request->gender,
+                'blood_group' => $request->blood_group,
+                'present_address' => $request->present_address,
+                'permanent_address' => $request->permanent_address,
+                'employee_id' => $request->employee_id,
+                'created_at' => now()
+            ]);
+
         }
 
         $employee_detail = EmployeeDetail::findOrFail($id);
@@ -97,9 +97,9 @@ class EmployeeDetailController extends Controller
         $employee_detail->update([
             'birthday' => $request->birthday,
             'gender' => $request->gender,
-            'blood_group' => $request->blood_group, 
-            'present_address' => $request->present_address, 
-            'permanent_address' => $request->permanent_address, 
+            'blood_group' => $request->blood_group,
+            'present_address' => $request->present_address,
+            'permanent_address' => $request->permanent_address,
             'employee_id' => $request->employee_id,
             'updated_at' => now()
         ]);
@@ -109,15 +109,15 @@ class EmployeeDetailController extends Controller
 
     public function deleteEmployeeDetail($id)
     {
-       $employee_detail = EmployeeDetail::findOrFail($id);
+        $employee_detail = EmployeeDetail::findOrFail($id);
 
-       $employee_image = $employee_detail->photo;
+        $employee_image = $employee_detail->photo;
 
-       unlink($employee_image);
+        unlink($employee_image);
 
-      EmployeeDetail::findOrFail($id)->delete();
+        EmployeeDetail::findOrFail($id)->delete();
 
-      return back();
+        return back();
 
     }
 }

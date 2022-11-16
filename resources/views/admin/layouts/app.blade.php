@@ -14,8 +14,6 @@
 	<link href="{{ asset('backend/assets/css/themes/lite-purple.min.css') }}" rel="stylesheet" />
 	<link href="{{ asset('backend/assets/css/plugins/perfect-scrollbar.min.css') }}" rel="stylesheet" />
 	<link rel="stylesheet" href="{{ asset('backend/assets/css/plugins/datatables.min.css') }}" />
-	{{-- <link rel="stylesheet" href="{{ asset('backend/assets/css/pickadate/classic.css') }}">
-	<link rel="stylesheet" href="{{ asset('backend/assets/css/pickadate/classic.date.css') }}"> --}}
 	<!--Font Awesome CSS-->
 	<link rel="stylesheet" href="{{ asset('backend/assets/fonts/font-awesome/css/font-awesome.min.css') }}" />
 
@@ -70,4 +68,5 @@
 		}
 	</script>
 </body>
+
 </html>

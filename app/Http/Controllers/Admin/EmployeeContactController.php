@@ -25,12 +25,12 @@ class EmployeeContactController extends Controller
 
     public function storeEmployeeContact(EmployeeContactRequest $request)
     {
-        
-        $validated =$request->validated();
+
+        $validated = $request->validated();
         $validated['employee_id'] = $request->employee_id;
         $validated['secondary_contact_number'] = $request->secondary_contact_number;
         $validated['secondary_email_address'] = $request->secondary_email_address;
-       
+
         EmployeeContact::create($validated);
 
         return redirect()->route('show.employee.contact');
@@ -47,12 +47,12 @@ class EmployeeContactController extends Controller
 
     public function updateEmployeeContact(EmployeeContactRequest $request, $id)
     {
-         
-        $validated =$request->validated();
+
+        $validated = $request->validated();
         $validated['employee_id'] = $request->employee_id;
         $validated['secondary_contact_number'] = $request->secondary_contact_number;
         $validated['secondary_email_address'] = $request->secondary_email_address;
-       
+
         EmployeeContact::findOrFail($id)->update($validated);
 
         return redirect()->route('show.employee.contact');
